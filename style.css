@@ -502,24 +502,27 @@ html, body {
 
 /* 3D Flip Card */
 .flip-card {
-  width: 110px; height: 190px;
-  perspective: 800px; cursor: default;
+  width: 130px;
+  perspective: 900px;
+  cursor: pointer;
+  flex-shrink: 0;
 }
 .flip-inner {
-  position: relative; width: 100%; height: 100%;
+  position: relative; width: 100%;
   transform-style: preserve-3d;
   transition: transform 0.9s cubic-bezier(.4,0,.2,1);
 }
 .flip-inner.flipped { transform: rotateY(180deg); }
 .flip-front, .flip-back {
-  position: absolute; inset: 0;
   backface-visibility: hidden;
-  border-radius: 10px; overflow: hidden;
+  border-radius: 12px; overflow: hidden;
 }
 .flip-back {
+  position: absolute; inset: 0;
   background: linear-gradient(160deg, var(--card-back2), var(--card-back1));
   border: 1px solid rgba(201,162,39,0.3);
   display: flex; align-items: center; justify-content: center;
+  aspect-ratio: 2/3.5;
 }
 .flip-back-inner {
   width: 85%; height: 85%;
@@ -528,26 +531,32 @@ html, body {
   font-size: 2rem; color: rgba(201,162,39,0.2);
 }
 .flip-front {
+  position: relative;
   transform: rotateY(180deg);
   border: 1px solid rgba(201,162,39,0.5);
   box-shadow: 0 0 30px rgba(159,95,232,0.4);
-  display: flex; flex-direction: column; overflow: visible;
+  display: flex; flex-direction: column;
 }
 .flip-front .card-face {
-  width: 100%; height: 100%; border-radius: 9px; overflow: hidden;
+  width: 100%; border-radius: 11px; overflow: hidden;
   display: flex; flex-direction: column;
 }
 .card-face-art {
-  flex: 1; display: flex; align-items: center; justify-content: center;
-  position: relative; overflow: hidden;
+  width: 100%; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  background: #0a0015;
 }
 .card-face-img {
-  width: 100%; height: 100%;
-  object-fit: cover; display: block;
+  width: 100%; height: auto;
+  object-fit: contain; display: block;
+}
+/* 逆位：整張圖旋轉 180 度 */
+.card-face.reversed .card-face-img {
+  transform: rotate(180deg);
 }
 .card-face-bottom {
-  background: rgba(0,0,0,0.5); padding: 6px 4px;
-  text-align: center; border-top: 1px solid rgba(201,162,39,0.2);
+  background: rgba(0,0,0,0.7); padding: 8px 6px;
+  text-align: center; border-top: 1px solid rgba(201,162,39,0.25);
 }
 .card-face-num {
   font-family: var(--font-cinzel); color: var(--gold);
@@ -563,6 +572,66 @@ html, body {
   border-radius: 10px; font-size: 0.55rem; padding: 2px 6px;
   color: var(--text-faint); z-index: 10; white-space: nowrap;
 }
+
+/* ── Card expanded popup ─────────────────────────────────── */
+.card-expand-panel {
+  position: fixed; inset: 0; z-index: 200;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(5,0,16,0.85); backdrop-filter: blur(6px);
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.3s;
+}
+.card-expand-panel.open {
+  opacity: 1; pointer-events: all;
+}
+.card-expand-inner {
+  background: linear-gradient(160deg, rgba(26,0,64,0.95), rgba(10,0,21,0.98));
+  border: 1px solid rgba(201,162,39,0.3);
+  border-radius: 16px; padding: 24px;
+  width: min(480px, 92vw); max-height: 90vh; overflow-y: auto;
+  display: flex; gap: 20px;
+  animation: expandIn 0.35s cubic-bezier(.34,1.56,.64,1) both;
+}
+@keyframes expandIn {
+  from { transform: scale(0.85); opacity: 0; }
+  to   { transform: scale(1);    opacity: 1; }
+}
+.expand-img-wrap {
+  flex-shrink: 0; width: 110px;
+  border-radius: 10px; overflow: hidden;
+  border: 1px solid rgba(201,162,39,0.4);
+  box-shadow: 0 0 20px rgba(159,95,232,0.3);
+}
+.expand-img-wrap img {
+  width: 100%; height: auto; display: block;
+}
+.expand-img-wrap.rev img { transform: rotate(180deg); }
+.expand-text { flex: 1; display: flex; flex-direction: column; gap: 10px; }
+.expand-name {
+  font-family: var(--font-cinzel); color: var(--gold);
+  font-size: 1.1rem; letter-spacing: 0.1em;
+}
+.expand-sub { color: var(--text-faint); font-size: 0.75rem; }
+.expand-kws { display: flex; flex-wrap: wrap; gap: 5px; }
+.expand-kw {
+  padding: 2px 9px; border: 1px solid rgba(159,95,232,0.3);
+  border-radius: 20px; font-size: 0.68rem; color: var(--violet);
+}
+.expand-interp-title {
+  font-family: var(--font-cinzel); color: var(--gold-lt);
+  font-size: 0.85rem; letter-spacing: 0.08em;
+}
+.expand-interp-desc {
+  color: var(--text-prime); font-size: 0.85rem;
+  line-height: 1.85; letter-spacing: 0.04em;
+}
+.expand-close {
+  position: absolute; top: 12px; right: 16px;
+  background: none; border: none; cursor: pointer;
+  color: var(--text-faint); font-size: 1.3rem;
+  transition: color 0.2s;
+}
+.expand-close:hover { color: var(--gold); }
 
 /* ── Reading Detail ──────────────────────────────────────── */
 .reading-detail { width: 100%; display: flex; flex-direction: column; gap: 20px; }

@@ -549,7 +549,7 @@ function buildRevealedCards() {
       </div>
       <div class="flip-front">
         ${reversed ? '<div class="card-reversed-badge">逆位</div>' : ''}
-        <div class="card-face" style="transform:rotate(${reversed ? 180 : 0}deg)">
+        <div class="card-face${reversed ? ' reversed' : ''}">
           <div class="card-face-art">
             <img class="card-face-img" src="${card.image}" alt="${card.name}">
           </div>
@@ -561,6 +561,7 @@ function buildRevealedCards() {
       </div>
     `;
 
+    flipCard.addEventListener('click', () => openCardExpand(card, reversed));
     flipCard.appendChild(flipInner);
     wrap.appendChild(posLabel);
     wrap.appendChild(flipCard);
@@ -620,6 +621,30 @@ function buildSummary() {
   }
   return '';
 }
+
+// ── Card Expand Panel ─────────────────────────────────────────
+function openCardExpand(card, reversed) {
+  const panel = $('cardExpandPanel');
+  const interp = reversed ? card.reversed : card.upright;
+  $('expandImg').src = card.image;
+  $('expandImg').alt = card.name;
+  $('expandImgWrap').className = 'expand-img-wrap' + (reversed ? ' rev' : '');
+  $('expandName').textContent = `${card.num} · ${card.name}${reversed ? '（逆位）' : ''}`;
+  $('expandSub').textContent = `${card.nameEn}${card.suit ? ' · ' + card.suit : ''} · ${card.element}`;
+  $('expandKws').innerHTML = (card.keywords || []).map(k => `<span class="expand-kw">${k}</span>`).join('');
+  $('expandTitle').textContent = interp.title;
+  $('expandDesc').textContent = interp.desc;
+  panel.classList.add('open');
+}
+
+$('cardExpandPanel').addEventListener('click', e => {
+  if (e.target === $('cardExpandPanel') || e.target === $('expandClose')) {
+    $('cardExpandPanel').classList.remove('open');
+  }
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') $('cardExpandPanel').classList.remove('open');
+});
 
 // ── Button Events ─────────────────────────────────────────────
 $('startBtn').addEventListener('click', () => showScreen('spread'));
