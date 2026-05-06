@@ -1,4 +1,10 @@
 'use strict';
+window.onerror = (msg, src, line) => {
+  document.body.insertAdjacentHTML('beforeend',
+    `<div style="position:fixed;bottom:0;left:0;right:0;background:red;color:white;padding:10px;z-index:9999;font-size:12px">
+      JS ERROR: ${msg} (line ${line})
+    </div>`);
+};
 
 /* ============================================================
    MYSTIC TAROT · Main App
