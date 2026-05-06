@@ -824,3 +824,6 @@ initStars();
 animateCanvas(0);
 spawnParticles();
 runLoading();
+
+// 點擊載入畫面可強制跳過
+$('loadingScreen').addEventListener('click', () => showScreen('welcome'));
