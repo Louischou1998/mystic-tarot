@@ -240,6 +240,10 @@ const MAJOR_ARCANA = [
 
 // 合併大小阿爾克納成完整 78 張牌組
 const ALL_CARDS = [...MAJOR_ARCANA, ...(typeof MINOR_ARCANA !== 'undefined' ? MINOR_ARCANA : [])];
+ALL_CARDS.forEach(card => {
+  card.remoteImage = card.image;
+  card.image = `assets/cards/${card.id}.png`;
+});
 
 const SPREAD_CONFIGS = {
   single: { count: 1, positions: ['今日指引'] },
@@ -517,6 +521,13 @@ function updateSelStatus() {
 }
 
 window.handleCardImageError = function handleCardImageError(img) {
+  const fallbackSrc = img.dataset.fallbackSrc;
+  if (fallbackSrc && img.src !== fallbackSrc && !img.dataset.fallbackTried) {
+    img.dataset.fallbackTried = '1';
+    img.src = fallbackSrc;
+    return;
+  }
+
   const fallback = img.nextElementSibling;
   img.onerror = null;
   img.style.display = 'none';
@@ -558,7 +569,7 @@ function buildRevealedCards() {
         ${reversed ? '<div class="card-reversed-badge">逆位</div>' : ''}
         <div class="card-face${reversed ? ' reversed' : ''}">
           <div class="card-face-art">
-            <img class="card-face-img" src="${card.image}" alt="${card.name}" onerror="handleCardImageError(this)">
+            <img class="card-face-img" src="${card.image}" data-fallback-src="${card.remoteImage || ''}" alt="${card.name}" onerror="handleCardImageError(this)">
             <span class="card-face-symbol" style="display:none;color:${card.symbolColor}">${card.symbol}</span>
           </div>
           <div class="card-face-bottom">
@@ -648,10 +659,17 @@ function openCardExpand(card, reversed) {
   expandSymbol.textContent = card.symbol;
   expandSymbol.style.color = card.symbolColor;
   expandImg.onerror = () => {
+    if (card.remoteImage && expandImg.src !== card.remoteImage && !expandImg.dataset.fallbackTried) {
+      expandImg.dataset.fallbackTried = '1';
+      expandImg.src = card.remoteImage;
+      return;
+    }
+
     expandImg.onerror = null;
     expandImg.style.display = 'none';
     expandSymbol.style.display = 'flex';
   };
+  expandImg.dataset.fallbackTried = '';
   expandImg.src = card.image;
   expandImg.alt = card.name;
   expandImgWrap.className = 'expand-img-wrap' + (reversed ? ' rev' : '');
