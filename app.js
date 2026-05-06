@@ -228,6 +228,9 @@ const MAJOR_ARCANA = [
   }
 ];
 
+// 合併大小阿爾克納成完整 78 張牌組
+const ALL_CARDS = [...MAJOR_ARCANA, ...(typeof MINOR_ARCANA !== 'undefined' ? MINOR_ARCANA : [])];
+
 const SPREAD_CONFIGS = {
   single: { count: 1, positions: ['今日指引'] },
   three:  { count: 3, positions: ['過去', '現在', '未來'] },
@@ -414,7 +417,7 @@ function performShuffle() {
     $('shuffleFx').classList.add('hidden');
     $('deckCta').textContent = '✦ 牌組已洗好 · 點擊開始抽牌 ✦';
     $('deckCta').style.opacity = '1';
-    state.shuffledDeck = fisherYates([...MAJOR_ARCANA]);
+    state.shuffledDeck = fisherYates([...ALL_CARDS]);
     deckPhase = 'ready';
   }, 1000);
 }
@@ -630,7 +633,7 @@ let isStreaming = false;
 
 function renderBubbleContent(text, isStreaming = false) {
   const parsed = text.replace(/\[CARD:([^:\]]+):([^\]]+)\]/g, (_, name, orientation) => {
-    const card = MAJOR_ARCANA.find(c => c.name === name.trim());
+    const card = ALL_CARDS.find(c => c.name === name.trim());
     const rev = orientation.trim() === '逆位';
     if (!card) return `<strong>【${name.trim()} · ${orientation.trim()}】</strong>`;
     // 串流中加 no-anim 避免閃動，串流結束後移除讓動畫正常播放
