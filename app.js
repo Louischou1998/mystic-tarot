@@ -5,11 +5,6 @@ window.onerror = (msg, src, line) => {
       JS ERROR: ${msg} (line ${line})
     </div>`);
 };
-document.addEventListener('DOMContentLoaded', () => {
-  document.body.insertAdjacentHTML('beforeend',
-    '<div style="position:fixed;top:10px;right:10px;background:lime;color:black;padding:6px;z-index:9999;font-size:11px">JS OK</div>');
-});
-
 /* ============================================================
    MYSTIC TAROT · Main App
    ============================================================ */
@@ -295,7 +290,10 @@ const screens = {
 // ── Screen Navigation ─────────────────────────────────────────
 function showScreen(name) {
   Object.values(screens).forEach(s => s?.classList.remove('active'));
-  if (screens[name]) screens[name].classList.add('active');
+  if (screens[name]) {
+    screens[name].classList.add('active');
+    screens[name].scrollTop = 0;
+  }
   state.phase = name;
 }
 

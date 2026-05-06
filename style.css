@@ -61,6 +61,9 @@ html, body {
 .screen.active {
   opacity: 1; pointer-events: all;
 }
+#readingScreen {
+  align-items: flex-start;
+}
 .screen-inner {
   position: relative; z-index: 2;
   width: 100%; max-width: 960px;
