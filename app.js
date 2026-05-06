@@ -330,17 +330,20 @@ function animateCanvas(t) {
 
 // ── Loading ───────────────────────────────────────────────────
 function runLoading() {
-  let p = 0;
   const bar = $('loadingBar');
-  const iv = setInterval(() => {
-    p += Math.random() * 15 + 5;
-    if (p >= 100) {
-      p = 100;
-      clearInterval(iv);
-      setTimeout(() => showScreen('welcome'), 400);
-    }
+  const start = performance.now();
+  const duration = 1500;
+
+  function tick(now) {
+    const p = Math.min((now - start) / duration * 100, 100);
     if (bar) bar.style.width = p + '%';
-  }, 180);
+    if (p < 100) {
+      requestAnimationFrame(tick);
+    } else {
+      setTimeout(() => showScreen('welcome'), 300);
+    }
+  }
+  requestAnimationFrame(tick);
 }
 
 // ── Particles ─────────────────────────────────────────────────
