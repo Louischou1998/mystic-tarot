@@ -478,6 +478,7 @@ let deckPhase = 'idle';
 function resetShuffleScreen() {
   $('deckStack').querySelectorAll('.deck-layer').forEach(l => l.style.animation = '');
   $('shuffleFx').classList.add('hidden');
+  $('deckZone').classList.remove('shuffling', 'ready');
   $('deckCta').textContent = '點擊牌組以洗牌';
   $('deckCta').style.opacity = '1';
   state.shuffledDeck = [];
@@ -492,15 +493,17 @@ $('deckZone').addEventListener('click', () => {
 function performShuffle() {
   deckPhase = 'shuffling';
   const layers = $('deckStack').querySelectorAll('.deck-layer');
+  $('deckZone').classList.add('shuffling');
+  $('deckZone').classList.remove('ready');
   $('shuffleFx').classList.remove('hidden');
   $('deckCta').style.opacity = '0';
 
   const angles = [
-    { sx: '60px',  sy: '-80px', sr: '20deg'  },
-    { sx: '-55px', sy: '-70px', sr: '-15deg' },
-    { sx: '80px',  sy: '-50px', sr: '25deg'  },
-    { sx: '-70px', sy: '-60px', sr: '-20deg' },
-    { sx: '50px',  sy: '-90px', sr: '10deg'  }
+    { sx: '95px',   sy: '-118px', sr: '38deg'  },
+    { sx: '-92px',  sy: '-108px', sr: '-34deg' },
+    { sx: '128px',  sy: '-78px',  sr: '48deg'  },
+    { sx: '-124px', sy: '-82px',  sr: '-44deg' },
+    { sx: '30px',   sy: '-142px', sr: '18deg'  }
   ];
 
   layers.forEach((l, i) => {
@@ -508,17 +511,19 @@ function performShuffle() {
     l.style.setProperty('--sx', a.sx);
     l.style.setProperty('--sy', a.sy);
     l.style.setProperty('--sr', a.sr);
-    l.style.animation = `deckShuffle 0.5s ease ${i * 0.08}s both`;
+    l.style.animation = `deckShuffle 1.15s cubic-bezier(.34,1.56,.64,1) ${i * 0.09}s both`;
   });
 
   setTimeout(() => {
     layers.forEach(l => l.style.animation = '');
     $('shuffleFx').classList.add('hidden');
+    $('deckZone').classList.remove('shuffling');
+    $('deckZone').classList.add('ready');
     $('deckCta').textContent = '✦ 牌組已洗好 · 點擊開始抽牌 ✦';
     $('deckCta').style.opacity = '1';
     state.shuffledDeck = fisherYates([...ALL_CARDS]);
     deckPhase = 'ready';
-  }, 1000);
+  }, 1700);
 }
 
 // ── Fisher-Yates Shuffle（crypto 隨機）────────────────────────
@@ -587,8 +592,15 @@ function onFanCardClick(card, idx) {
       card: state.shuffledDeck[i],
       reversed: cryptoRandom() < 0.3
     }));
-    setTimeout(() => buildReadingScreen(), 600);
+    showFateProcessing();
+    setTimeout(() => buildReadingScreen(), 1800);
   }
+}
+
+function showFateProcessing() {
+  const processing = $('fateProcessing');
+  if (!processing) return;
+  processing.classList.remove('hidden');
 }
 
 function updateSelStatus() {
@@ -602,6 +614,7 @@ function updateSelStatus() {
   $('selSub').textContent = done < need
     ? `感受每張牌的能量，選擇呼喚你的那一張`
     : `你選擇的道路已清晰顯現`;
+  $('fateProcessing')?.classList.add('hidden');
 }
 
 window.handleCardImageError = function handleCardImageError(img) {

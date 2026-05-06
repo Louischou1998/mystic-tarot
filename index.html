@@ -127,6 +127,13 @@
       <h2 class="section-title cinzel">FOCUS YOUR MIND</h2>
       <p class="section-sub noto" id="shuffleSub">深呼吸，將你的問題或意念注入牌組之中</p>
       <div class="deck-zone" id="deckZone">
+        <div class="ritual-circle" aria-hidden="true">
+          <span class="sigil s1">☽</span>
+          <span class="sigil s2">✦</span>
+          <span class="sigil s3">☉</span>
+          <span class="sigil s4">△</span>
+        </div>
+        <div class="ritual-beam" aria-hidden="true"></div>
         <div class="deck-stack" id="deckStack">
           <div class="deck-layer dl-5"></div>
           <div class="deck-layer dl-4"></div>
@@ -153,6 +160,11 @@
       <p class="section-sub noto" id="selSub">感受每張牌的能量，選擇呼喚你的那一張</p>
       <div class="fan-container" id="fanContainer"></div>
       <div class="sel-status noto" id="selStatus"></div>
+      <div class="fate-processing hidden" id="fateProcessing">
+        <div class="processing-ring"></div>
+        <div class="processing-eye">✦</div>
+        <p class="noto">命運正在編織你的牌陣⋯⋯</p>
+      </div>
     </div>
   </div>
 
@@ -203,6 +215,18 @@
 
       <!-- Messages -->
       <div class="chat-messages" id="chatMessages">
+        <div class="hearth-ambience" aria-hidden="true">
+          <div class="hearth-glow"></div>
+          <div class="hearth-logs">
+            <span></span>
+            <span></span>
+          </div>
+          <div class="hearth-flames">
+            <span class="flame f1"></span>
+            <span class="flame f2"></span>
+            <span class="flame f3"></span>
+          </div>
+        </div>
         <div class="chat-msg oracle-msg">
           <div class="msg-avatar-icon">👁</div>
           <div class="msg-bubble noto">
@@ -252,7 +276,7 @@
     </div>
   </div>
 
-  <script src="cards_minor.js?v=10"></script>
-  <script src="app.js?v=10"></script>
+  <script src="cards_minor.js?v=14"></script>
+  <script src="app.js?v=14"></script>
 </body>
 </html>
