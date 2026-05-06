@@ -539,6 +539,22 @@ html, body {
   align-items: flex-end; justify-content: center;
   overflow: visible;
 }
+.fan-container.dealing {
+  pointer-events: none;
+}
+.fan-container.dealing::before {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  width: 180px;
+  height: 36px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(201,162,39,0.28) 0%, rgba(159,95,232,0.18) 42%, transparent 72%);
+  filter: blur(8px);
+  animation: dealGlow 1.4s ease-in-out infinite;
+}
 .fan-card {
   position: absolute; bottom: 0;
   width: 90px; height: 155px; border-radius: 8px;
@@ -547,8 +563,14 @@ html, body {
   box-shadow: 0 8px 30px rgba(0,0,0,0.7);
   cursor: pointer;
   transform-origin: bottom center;
-  transition: transform 0.35s cubic-bezier(.34,1.56,.64,1), box-shadow 0.35s, border-color 0.35s;
+  opacity: 1;
+  transition: transform 0.75s cubic-bezier(.16,1,.3,1), opacity 0.5s ease, box-shadow 0.35s, border-color 0.35s;
   will-change: transform;
+}
+.fan-card.dealing {
+  transform: translateX(0) translateY(-22px) rotate(0deg) scale(0.92) !important;
+  opacity: 0;
+  box-shadow: 0 0 26px rgba(201,162,39,0.24), 0 8px 30px rgba(0,0,0,0.7);
 }
 .fan-card::before {
   content: '✦';
@@ -576,6 +598,10 @@ html, body {
   z-index: 120 !important;
 }
 .fan-card.selected::before { color: rgba(201,162,39,0.4); }
+@keyframes dealGlow {
+  0%,100% { opacity: 0.45; transform: translateX(-50%) scaleX(0.9); }
+  50% { opacity: 0.9; transform: translateX(-50%) scaleX(1.12); }
+}
 
 .sel-status {
   color: var(--gold-lt); font-size: 0.85rem;
@@ -739,10 +765,30 @@ html, body {
   display: flex; align-items: center; justify-content: center;
   background: rgba(5,0,16,0.85); backdrop-filter: blur(6px);
   opacity: 0; pointer-events: none;
-  transition: opacity 0.3s;
+  transition: opacity 0.65s ease;
+}
+.card-expand-panel::before {
+  content: '✦';
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold);
+  font-size: 1.4rem;
+  border: 1px solid rgba(201,162,39,0.2);
+  box-shadow: 0 0 42px rgba(201,162,39,0.22), inset 0 0 32px rgba(159,95,232,0.16);
+  opacity: 0;
+  transform: scale(0.65) rotate(0deg);
+  pointer-events: none;
 }
 .card-expand-panel.open {
   opacity: 1; pointer-events: all;
+}
+.card-expand-panel.open::before {
+  animation: expandPrelude 0.85s ease both;
 }
 .card-expand-inner {
   background: linear-gradient(160deg, rgba(26,0,64,0.95), rgba(10,0,21,0.98));
@@ -750,11 +796,21 @@ html, body {
   border-radius: 16px; padding: 24px;
   width: min(480px, 92vw); max-height: 90vh; overflow-y: auto;
   display: flex; gap: 20px;
-  animation: expandIn 0.35s cubic-bezier(.34,1.56,.64,1) both;
+  opacity: 0;
+  transform: translateY(28px) scale(0.9);
+}
+.card-expand-panel.open .card-expand-inner {
+  animation: expandIn 0.78s cubic-bezier(.2,.8,.2,1) 0.18s both;
+}
+@keyframes expandPrelude {
+  0% { opacity: 0; transform: scale(0.55) rotate(0deg); filter: blur(4px); }
+  35% { opacity: 0.95; transform: scale(1.05) rotate(120deg); filter: blur(0); }
+  100% { opacity: 0; transform: scale(1.55) rotate(260deg); filter: blur(8px); }
 }
 @keyframes expandIn {
-  from { transform: scale(0.85); opacity: 0; }
-  to   { transform: scale(1);    opacity: 1; }
+  0% { transform: translateY(28px) scale(0.9); opacity: 0; filter: blur(8px); }
+  55% { transform: translateY(-4px) scale(1.02); opacity: 1; filter: blur(0); }
+  100% { transform: translateY(0) scale(1); opacity: 1; filter: blur(0); }
 }
 .expand-img-wrap {
   flex-shrink: 0; width: 110px;

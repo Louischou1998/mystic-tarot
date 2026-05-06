@@ -545,6 +545,7 @@ function fisherYates(arr) {
 function buildFan() {
   const fan = $('fanContainer');
   fan.innerHTML = '';
+  fan.classList.add('dealing');
   state.selectedIndices = [];
   state.drawnCards = [];
 
@@ -562,7 +563,7 @@ function buildFan() {
     const offsetX = Math.sin(rad) * fanRadius;
     const tx = centerX - 45 + offsetX;
     const card = document.createElement('div');
-    card.className = 'fan-card';
+    card.className = 'fan-card dealing';
     card.dataset.index = i;
     const baseTransform = `translateX(${offsetX}px) rotate(${angle}deg)`;
     card.style.cssText = `
@@ -570,15 +571,24 @@ function buildFan() {
       transform: rotate(${angle}deg);
       --base-transform: ${baseTransform};
       z-index: ${i};
-      transition-delay: ${i * 0.018}s;
+      transition-delay: ${i * 0.035}s;
     `;
     card.addEventListener('click', () => onFanCardClick(card, i));
     fan.appendChild(card);
   }
+
+  requestAnimationFrame(() => {
+    fan.querySelectorAll('.fan-card').forEach((card, i) => {
+      setTimeout(() => card.classList.remove('dealing'), 80 + i * 42);
+    });
+    setTimeout(() => fan.classList.remove('dealing'), 80 + fanSpread * 42 + 450);
+  });
+
   updateSelStatus();
 }
 
 function onFanCardClick(card, idx) {
+  if ($('fanContainer').classList.contains('dealing')) return;
   const cfg = SPREAD_CONFIGS[state.currentSpread];
   if (card.classList.contains('selected')) return;
   if (state.selectedIndices.length >= cfg.count) return;
