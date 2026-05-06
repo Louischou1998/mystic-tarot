@@ -311,7 +311,7 @@ function escapeHTML(value) {
 
 async function loadFullMeanings() {
   try {
-    const res = await fetch('assets/data/tarot-meanings-full.json?v=1');
+    const res = await fetch('assets/data/tarot-meanings-full.json?v=2');
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const meanings = await res.json();
     state.meaningsById = new Map(meanings.map(item => [item.id, item]));
