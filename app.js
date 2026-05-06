@@ -9,6 +9,7 @@ const MAJOR_ARCANA = [
   {
     id: 0, name: '愚者', nameEn: 'The Fool', num: 'O',
     element: '風', planet: '天王星',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/9/90/RWS_Tarot_00_Fool.jpg',
     symbol: '✦', symbolColor: '#a8d8ff',
     gradient: 'linear-gradient(160deg,#0d2b4a,#1a0040,#0a2a1a)',
     keywords: ['新開始','冒險','純真','自由','潛力'],
@@ -18,6 +19,7 @@ const MAJOR_ARCANA = [
   {
     id: 1, name: '魔術師', nameEn: 'The Magician', num: 'I',
     element: '風', planet: '水星',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/d/de/RWS_Tarot_01_Magician.jpg',
     symbol: '∞', symbolColor: '#ffcc44',
     gradient: 'linear-gradient(160deg,#2d1a00,#4a1a00,#1a0040)',
     keywords: ['意志力','技能','創造','顯化','機智'],
@@ -25,8 +27,9 @@ const MAJOR_ARCANA = [
     reversed: { title: '逆位 · 力量虛耗', desc: '你的才能可能正在被浪費，或者你在使用它們時缺乏方向。小心欺騙與操控——不論是來自他人還是自己內心的自我欺騙。重新整頓你的意圖，讓力量回歸正軌。' }
   },
   {
-    id: 2, name: '女祭司', nameEn: 'The High Priestess', num: 'II',
+    id: 2, name: '女祭司', nameEn: 'The High Priestess', num: 'II',
     element: '水', planet: '月亮',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/8/88/RWS_Tarot_02_High_Priestess.jpg',
     symbol: '☽', symbolColor: '#c8c0ff',
     gradient: 'linear-gradient(160deg,#0d0030,#1a0050,#000d2a)',
     keywords: ['直覺','神秘','智慧','潛意識','內在聲音'],
@@ -34,8 +37,9 @@ const MAJOR_ARCANA = [
     reversed: { title: '逆位 · 壓抑直覺', desc: '你可能忽視了自己的直覺，過度依賴邏輯與外部意見。隱藏的秘密或被壓抑的情感正在影響你。花些時間與自己獨處，讓潛意識的訊息浮現出來。' }
   },
   {
-    id: 3, name: '女皇', nameEn: 'The Empress', num: 'III',
+    id: 3, name: '女皇', nameEn: 'The Empress', num: 'III',
     element: '土', planet: '金星',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/d/d2/RWS_Tarot_03_Empress.jpg',
     symbol: '♀', symbolColor: '#80ff80',
     gradient: 'linear-gradient(160deg,#0d2a00,#1a4000,#2a1a00)',
     keywords: ['豐盛','創造力','滋養','大地','美麗'],
@@ -43,8 +47,9 @@ const MAJOR_ARCANA = [
     reversed: { title: '逆位 · 過度依賴', desc: '你可能在創造力或情感上感到枯竭，也許正在忽視自我照顧。過度依賴他人或物質來獲得安全感。重新與大地建立連結，滋養自己的身心靈，才能恢復那份豐盛的能量。' }
   },
   {
-    id: 4, name: '皇帝', nameEn: 'The Emperor', num: 'IV',
-    element: '火', planet: '火星',
+    id: 4, name: '皇帝', nameEn: 'The Emperor', num: 'IV',
+    element: '火', planet: '牡羊座',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/c/c3/RWS_Tarot_04_Emperor.jpg',
     symbol: '♂', symbolColor: '#ff6644',
     gradient: 'linear-gradient(160deg,#2a0000,#4a1000,#1a0020)',
     keywords: ['權威','穩定','結構','領導','保護'],
@@ -52,8 +57,9 @@ const MAJOR_ARCANA = [
     reversed: { title: '逆位 · 專制與失控', desc: '你可能在生活中某個領域失去了控制，或者走向另一個極端——過於強硬與獨裁。檢視你的邊界是否健康，是否允許了足夠的彈性與包容。真正的力量來自於智慧，而非強制控制。' }
   },
   {
-    id: 5, name: '教皇', nameEn: 'The Hierophant', num: 'V',
+    id: 5, name: '教皇', nameEn: 'The Hierophant', num: 'V',
     element: '土', planet: '金牛座',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/8/8d/RWS_Tarot_05_Hierophant.jpg',
     symbol: '✟', symbolColor: '#ffd070',
     gradient: 'linear-gradient(160deg,#1a1000,#2a1a00,#0d0030)',
     keywords: ['傳統','信仰','精神指引','學習','機構'],
@@ -61,8 +67,9 @@ const MAJOR_ARCANA = [
     reversed: { title: '逆位 · 打破桎梏', desc: '你可能正在質疑傳統規範與既定體制。這可能是個積極的信號，促使你追求個人的精神探索，而非盲目遵從教條。但也要小心不要完全拒絕所有智慧傳承，找到自己的平衡點。' }
   },
   {
-    id: 6, name: '戀人', nameEn: 'The Lovers', num: 'VI',
+    id: 6, name: '戀人', nameEn: 'The Lovers', num: 'VI',
     element: '風', planet: '雙子座',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/d/db/RWS_Tarot_06_Lovers.jpg',
     symbol: '❤', symbolColor: '#ff88aa',
     gradient: 'linear-gradient(160deg,#2a0015,#400020,#0d0030)',
     keywords: ['愛情','選擇','和諧','價值觀','連結'],
@@ -70,8 +77,9 @@ const MAJOR_ARCANA = [
     reversed: { title: '逆位 · 失衡與矛盾', desc: '關係或內心中可能存在不和諧、失衡或重要的矛盾。你可能在逃避一個困難的選擇，或者你的行動與真正的價值觀相悖。深入審視自己的心，找到真正重要的事物。' }
   },
   {
-    id: 7, name: '戰車', nameEn: 'The Chariot', num: 'VII',
+    id: 7, name: '戰車', nameEn: 'The Chariot', num: 'VII',
     element: '水', planet: '巨蟹座',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/9/9b/RWS_Tarot_07_Chariot.jpg',
     symbol: '⚔', symbolColor: '#88ccff',
     gradient: 'linear-gradient(160deg,#001a2a,#002a3a,#1a0040)',
     keywords: ['決心','勝利','意志力','控制','前進'],
@@ -79,8 +87,9 @@ const MAJOR_ARCANA = [
     reversed: { title: '逆位 · 失去方向', desc: '你可能感到失去控制或方向感。無法整合內心衝突的力量，導致原地打轉。花時間釐清你真正想要前往的方向，重新校準你的羅盤，再出發不遲。' }
   },
   {
-    id: 8, name: '力量', nameEn: 'Strength', num: 'VIII',
+    id: 8, name: '力量', nameEn: 'Strength', num: 'VIII',
     element: '火', planet: '獅子座',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/f/f5/RWS_Tarot_08_Strength.jpg',
     symbol: '◉', symbolColor: '#ffaa44',
     gradient: 'linear-gradient(160deg,#2a1500,#3a1a00,#1a0020)',
     keywords: ['勇氣','耐心','內在力量','慈悲','自制'],
@@ -88,8 +97,9 @@ const MAJOR_ARCANA = [
     reversed: { title: '逆位 · 自我懷疑', desc: '你可能正在經歷自我懷疑或對自身能力缺乏信心。壓抑憤怒或負面情緒可能正在消耗你的力量。練習自我憐憫，允許自己展現脆弱，這正是力量的另一種形式。' }
   },
   {
-    id: 9, name: '隱者', nameEn: 'The Hermit', num: 'IX',
+    id: 9, name: '隱者', nameEn: 'The Hermit', num: 'IX',
     element: '土', planet: '處女座',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/4/4d/RWS_Tarot_09_Hermit.jpg',
     symbol: '☯', symbolColor: '#aaffcc',
     gradient: 'linear-gradient(160deg,#001a10,#0a200a,#0d0030)',
     keywords: ['獨處','內省','智慧','引導','尋覓'],
@@ -97,8 +107,9 @@ const MAJOR_ARCANA = [
     reversed: { title: '逆位 · 孤立與逃避', desc: '過度的孤立可能正在讓你與世界斷開連結，陷入過分的自我封閉。另一方面，你可能逃避了必要的獨處與自我反省。找到社交與獨處之間的平衡點，既連結世界，也與自我連結。' }
   },
   {
-    id: 10, name: '命運之輪', nameEn: 'Wheel of Fortune', num: 'X',
+    id: 10, name: '命運之輪', nameEn: 'Wheel of Fortune', num: 'X',
     element: '火', planet: '木星',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/3/3c/RWS_Tarot_10_Wheel_of_Fortune.jpg',
     symbol: '⊕', symbolColor: '#ffdd88',
     gradient: 'linear-gradient(160deg,#1a1a00,#2a2000,#0d0030)',
     keywords: ['命運','轉折','循環','機遇','業力'],
@@ -106,8 +117,9 @@ const MAJOR_ARCANA = [
     reversed: { title: '逆位 · 逆境與阻礙', desc: '命運似乎暫時轉向逆境，你可能感到運氣不佳或事事不順。記住輪轉的本質——低谷之後必有高峰。此刻最重要的是從逆境中汲取教訓，為下一次的轉機做好準備。' }
   },
   {
-    id: 11, name: '正義', nameEn: 'Justice', num: 'XI',
+    id: 11, name: '正義', nameEn: 'Justice', num: 'XI',
     element: '風', planet: '天秤座',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/e/e0/RWS_Tarot_11_Justice.jpg',
     symbol: '⚖', symbolColor: '#88aaff',
     gradient: 'linear-gradient(160deg,#001030,#001a40,#100020)',
     keywords: ['公平','真相','因果','平衡','責任'],
@@ -115,8 +127,9 @@ const MAJOR_ARCANA = [
     reversed: { title: '逆位 · 不公與逃避', desc: '你可能正在面對不公正的對待，或者你自己正在逃避某些後果與責任。不誠實或不公正的行為可能正在侵蝕你的內心。面對真相，承擔責任，是恢復平衡的唯一途徑。' }
   },
   {
-    id: 12, name: '倒吊人', nameEn: 'The Hanged Man', num: 'XII',
+    id: 12, name: '倒吊人', nameEn: 'The Hanged Man', num: 'XII',
     element: '水', planet: '海王星',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/2/2b/RWS_Tarot_12_Hanged_Man.jpg',
     symbol: '☊', symbolColor: '#88ffcc',
     gradient: 'linear-gradient(160deg,#001a1a,#002a2a,#0d0030)',
     keywords: ['暫停','放下','犧牲','新視角','等待'],
@@ -124,8 +137,9 @@ const MAJOR_ARCANA = [
     reversed: { title: '逆位 · 無效犧牲', desc: '你可能陷入停滯卻沒有獲得任何洞見，或者正在做出不必要的犧牲。是時候從那個不服務你的「懸吊」狀態中釋放自己了。採取行動，結束無意義的等待，繼續前行。' }
   },
   {
-    id: 13, name: '死神', nameEn: 'Death', num: 'XIII',
+    id: 13, name: '死神', nameEn: 'Death', num: 'XIII',
     element: '水', planet: '天蠍座',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/d/d7/RWS_Tarot_13_Death.jpg',
     symbol: '🌙', symbolColor: '#cc88ff',
     gradient: 'linear-gradient(160deg,#0d0020,#1a0030,#000d0d)',
     keywords: ['轉化','結束','新生','蛻變','放下過去'],
@@ -133,8 +147,9 @@ const MAJOR_ARCANA = [
     reversed: { title: '逆位 · 拒絕改變', desc: '你可能正在抗拒生命中必要的改變，緊抓著已經不再服務你的事物不放。這種抗拒正在阻礙你的成長與前進。勇敢地讓那些已完成使命的事物離去，轉化才能真正發生。' }
   },
   {
-    id: 14, name: '節制', nameEn: 'Temperance', num: 'XIV',
+    id: 14, name: '節制', nameEn: 'Temperance', num: 'XIV',
     element: '火', planet: '射手座',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/f/f8/RWS_Tarot_14_Temperance.jpg',
     symbol: '△▽', symbolColor: '#aaffaa',
     gradient: 'linear-gradient(160deg,#001a10,#0a2a00,#00101a)',
     keywords: ['平衡','耐心','調和','療癒','中庸'],
@@ -142,8 +157,9 @@ const MAJOR_ARCANA = [
     reversed: { title: '逆位 · 失衡與過度', desc: '生活中可能存在嚴重的失衡，某些領域過度，某些領域匱乏。你可能正在走極端，無法找到健康的中道。重新審視你的習慣與選擇，尋求更健康、更持久的平衡方式。' }
   },
   {
-    id: 15, name: '惡魔', nameEn: 'The Devil', num: 'XV',
+    id: 15, name: '惡魔', nameEn: 'The Devil', num: 'XV',
     element: '土', planet: '摩羯座',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/5/55/RWS_Tarot_15_Devil.jpg',
     symbol: '⛧', symbolColor: '#ff4444',
     gradient: 'linear-gradient(160deg,#1a0000,#2a0010,#0d0010)',
     keywords: ['束縛','物質執著','上癮','陰影','解放'],
@@ -151,8 +167,9 @@ const MAJOR_ARCANA = [
     reversed: { title: '逆位 · 掙脫枷鎖', desc: '你正在從某種束縛、上癮或有害的模式中解放自己。這需要勇氣，但你已經在這條路上了。繼續剪斷那些不再服務你的鎖鏈，重新找回自由與自主的力量。' }
   },
   {
-    id: 16, name: '塔', nameEn: 'The Tower', num: 'XVI',
+    id: 16, name: '塔', nameEn: 'The Tower', num: 'XVI',
     element: '火', planet: '火星',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/5/53/RWS_Tarot_16_Tower.jpg',
     symbol: '⚡', symbolColor: '#ffaa00',
     gradient: 'linear-gradient(160deg,#1a0a00,#2a0800,#0d0020)',
     keywords: ['突變','衝擊','崩潰','啟示','解放'],
@@ -160,8 +177,9 @@ const MAJOR_ARCANA = [
     reversed: { title: '逆位 · 逃避崩塌', desc: '你可能在試圖阻止一場不可避免的崩塌，或者正在走出一段動盪時期的另一端。雖然最壞的時刻已過，但請學習這段經歷帶來的教訓，避免在同樣虛假的基礎上重建。' }
   },
   {
-    id: 17, name: '星星', nameEn: 'The Star', num: 'XVII',
+    id: 17, name: '星星', nameEn: 'The Star', num: 'XVII',
     element: '風', planet: '水瓶座',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/d/db/RWS_Tarot_17_Star.jpg',
     symbol: '★', symbolColor: '#aaddff',
     gradient: 'linear-gradient(160deg,#001a2a,#001030,#0a0020)',
     keywords: ['希望','療癒','靈感','更新','信念'],
@@ -169,8 +187,9 @@ const MAJOR_ARCANA = [
     reversed: { title: '逆位 · 失去希望', desc: '你可能正在經歷一段信念動搖、失去方向感的時期。過去的傷痛也許讓你難以再次相信美好的可能性。請記住，星光不因雲層遮蔽而消失——希望仍在，請溫柔地對待自己，慢慢療癒。' }
   },
   {
-    id: 18, name: '月亮', nameEn: 'The Moon', num: 'XVIII',
+    id: 18, name: '月亮', nameEn: 'The Moon', num: 'XVIII',
     element: '水', planet: '雙魚座',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/7/7f/RWS_Tarot_18_Moon.jpg',
     symbol: '☾', symbolColor: '#ccbbff',
     gradient: 'linear-gradient(160deg,#080020,#100028,#001015)',
     keywords: ['幻象','恐懼','潛意識','直覺','迷霧'],
@@ -178,8 +197,9 @@ const MAJOR_ARCANA = [
     reversed: { title: '逆位 · 迷霧散去', desc: '困惑與混亂正在緩緩消散，真相開始浮出水面。那些長期困擾你的恐懼或幻象，即將被清晰所取代。信任這個澄清的過程，讓內心的直覺引領你走向更清明的狀態。' }
   },
   {
-    id: 19, name: '太陽', nameEn: 'The Sun', num: 'XIX',
+    id: 19, name: '太陽', nameEn: 'The Sun', num: 'XIX',
     element: '火', planet: '太陽',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/1/17/RWS_Tarot_19_Sun.jpg',
     symbol: '☀', symbolColor: '#ffdd44',
     gradient: 'linear-gradient(160deg,#2a1a00,#3a2000,#1a0020)',
     keywords: ['喜悅','成功','活力','清晰','豐盛'],
@@ -187,8 +207,9 @@ const MAJOR_ARCANA = [
     reversed: { title: '逆位 · 陽光暫隱', desc: '太陽的光芒暫時被遮蔽，喜悅感可能不那麼強烈或持久。你可能對自己或未來過於悲觀。記住，雲彩只是暫時的，太陽始終在雲後閃耀。重新連結你內心的光，讓它從內而外地照耀出來。' }
   },
   {
-    id: 20, name: '審判', nameEn: 'Judgement', num: 'XX',
+    id: 20, name: '審判', nameEn: 'Judgement', num: 'XX',
     element: '火', planet: '冥王星',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/d/dd/RWS_Tarot_20_Judgement.jpg',
     symbol: '♦', symbolColor: '#ff8866',
     gradient: 'linear-gradient(160deg,#1a0800,#2a0a00,#0d0030)',
     keywords: ['覺醒','更新','召喚','寬恕','啟示'],
@@ -196,8 +217,9 @@ const MAJOR_ARCANA = [
     reversed: { title: '逆位 · 自我審判', desc: '過度嚴苛的自我批判或拒絕反省，都在阻礙你的靈性成長。你可能正在拒絕聆聽來自更高層次的呼喚，或者困於對過去的悔恨無法自拔。請以慈悲的心寬待自己，覺醒的道路始終向你敞開。' }
   },
   {
-    id: 21, name: '世界', nameEn: 'The World', num: 'XXI',
+    id: 21, name: '世界', nameEn: 'The World', num: 'XXI',
     element: '土', planet: '土星',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/f/ff/RWS_Tarot_21_World.jpg',
     symbol: '⊛', symbolColor: '#88ffdd',
     gradient: 'linear-gradient(160deg,#001a15,#0a2a20,#0d0030)',
     keywords: ['完成','整合','成就','圓滿','旅程終點'],
@@ -507,9 +529,7 @@ function buildRevealedCards() {
         ${reversed ? '<div class="card-reversed-badge">逆位</div>' : ''}
         <div class="card-face" style="transform:rotate(${reversed ? 180 : 0}deg)">
           <div class="card-face-art">
-            <div class="card-face-art-bg" style="background:${card.gradient}"></div>
-            <div class="card-face-art-pattern"></div>
-            <div class="card-face-symbol" style="color:${card.symbolColor}">${card.symbol}</div>
+            <img class="card-face-img" src="${card.image}" alt="${card.name}">
           </div>
           <div class="card-face-bottom">
             <div class="card-face-num">${card.num}</div>
@@ -614,10 +634,9 @@ function renderBubbleContent(text, isStreaming = false) {
     const rev = orientation.trim() === '逆位';
     if (!card) return `<strong>【${name.trim()} · ${orientation.trim()}】</strong>`;
     // 串流中加 no-anim 避免閃動，串流結束後移除讓動畫正常播放
-    return `<div class="inline-card${isStreaming ? ' no-anim' : ''}" style="--card-bg:${card.gradient}">
+    return `<div class="inline-card${isStreaming ? ' no-anim' : ''}">
       <div class="ic-art">
-        <div class="ic-art-bg"></div>
-        <span style="color:${card.symbolColor};transform:rotate(${rev?180:0}deg);display:inline-block">${card.symbol}</span>
+        <img src="${card.image}" alt="${card.name}" style="width:100%;height:100%;object-fit:cover;display:block;transform:rotate(${rev?180:0}deg)">
       </div>
       <div class="ic-name">${card.num} · ${card.name}<br><small>${orientation.trim()}</small></div>
     </div>`;
