@@ -622,13 +622,14 @@ window.handleCardImageError = function handleCardImageError(img) {
 function buildReadingScreen() {
   showScreen('reading');
   buildRevealedCards();
-  buildReadingDetail();
+  showReadingRevealPrompt();
 }
 
 function buildRevealedCards() {
   const container = $('revealedCards');
   container.innerHTML = '';
   const cfg = SPREAD_CONFIGS[state.currentSpread];
+  let revealedCount = 0;
 
   state.drawnCards.forEach(({ card, reversed }, i) => {
     const wrap = document.createElement('div');
@@ -664,14 +665,33 @@ function buildRevealedCards() {
       </div>
     `;
 
-    flipCard.addEventListener('click', () => openCardExpand(card, reversed));
+    flipCard.addEventListener('click', () => {
+      if (!flipInner.classList.contains('flipped')) {
+        flipInner.classList.add('flipped');
+        revealedCount += 1;
+        if (revealedCount === state.drawnCards.length) {
+          setTimeout(() => buildReadingDetail(), 500);
+        }
+        return;
+      }
+
+      openCardExpand(card, reversed);
+    });
     flipCard.appendChild(flipInner);
     wrap.appendChild(posLabel);
     wrap.appendChild(flipCard);
     container.appendChild(wrap);
-
-    setTimeout(() => flipInner.classList.add('flipped'), 300 + i * 500);
   });
+}
+
+function showReadingRevealPrompt() {
+  const detail = $('readingDetail');
+  detail.innerHTML = `
+    <div class="reading-summary reveal-prompt">
+      <div class="summary-title cinzel">✦ 請親手翻開牌面 ✦</div>
+      <div class="summary-text noto">依照你的直覺點擊每一張牌。當所有牌都揭示後，完整解讀會自動浮現。</div>
+    </div>
+  `;
 }
 
 function buildReadingDetail() {
