@@ -36,9 +36,11 @@ const SYSTEM_PROMPT = `你是「命運之眼」——一位神秘古老的塔羅
 - 星幣(土)：王牌至十、侍者、騎士、皇后、國王
 
 【抽牌格式】
-當用戶要求抽牌時，必須使用此格式標示牌卡（隨機選擇，約30%機率為逆位）：
+當用戶要求抽牌時，系統會在訊息中提供預先抽好的牌（格式：「[預抽牌：牌名·正逆位]」）。
+你必須使用該牌進行解讀，並在回應中用以下格式標示：
 [CARD:牌名:正逆位]
 例如：[CARD:太陽:正位] 或 [CARD:月亮:逆位]
+絕對不可自行選擇其他牌，必須使用預抽的牌。
 每張牌必須有深入、有溫度的解讀，結合用戶的具體問題。
 
 【回應長度：務必簡潔】
@@ -46,10 +48,42 @@ const SYSTEM_PROMPT = `你是「命運之眼」——一位神秘古老的塔羅
 抽牌解讀：80-130字（必須包含 [CARD:...] 標籤）
 絕對不要超過130字，言簡意賅才是智者之道。`;
 
+// 78張牌名列表（與前端同步）
+const ALL_CARD_NAMES = [
+  '愚者','魔術師','女祭司','女皇','皇帝','教皇','戀人','戰車','力量','隱者',
+  '命運之輪','正義','倒吊人','死神','節制','惡魔','塔','星星','月亮','太陽','審判','世界',
+  '權杖王牌','權杖二','權杖三','權杖四','權杖五','權杖六','權杖七','權杖八','權杖九','權杖十','權杖侍者','權杖騎士','權杖皇后','權杖國王',
+  '聖杯王牌','聖杯二','聖杯三','聖杯四','聖杯五','聖杯六','聖杯七','聖杯八','聖杯九','聖杯十','聖杯侍者','聖杯騎士','聖杯皇后','聖杯國王',
+  '寶劍王牌','寶劍二','寶劍三','寶劍四','寶劍五','寶劍六','寶劍七','寶劍八','寶劍九','寶劍十','寶劍侍者','寶劍騎士','寶劍皇后','寶劍國王',
+  '星幣王牌','星幣二','星幣三','星幣四','星幣五','星幣六','星幣七','星幣八','星幣九','星幣十','星幣侍者','星幣騎士','星幣皇后','星幣國王'
+];
+
+function drawRandomCard() {
+  const name = ALL_CARD_NAMES[Math.floor(Math.random() * ALL_CARD_NAMES.length)];
+  const orientation = Math.random() < 0.3 ? '逆位' : '正位';
+  return `${name}·${orientation}`;
+}
+
+function needsCardDraw(messages) {
+  const last = messages[messages.length - 1]?.content?.toLowerCase() || '';
+  return /抽|牌|指引|今日|運勢|感情|事業|財|draw|card/.test(last);
+}
+
 app.post('/api/chat', async (req, res) => {
   const { messages } = req.body;
   if (!messages || !Array.isArray(messages)) {
     return res.status(400).json({ error: 'Invalid messages' });
+  }
+
+  // 偵測是否需要抽牌，若是則在最後訊息附加預抽結果
+  const augmented = [...messages];
+  if (needsCardDraw(messages)) {
+    const drawn = drawRandomCard();
+    const last = augmented[augmented.length - 1];
+    augmented[augmented.length - 1] = {
+      ...last,
+      content: `${last.content}\n\n[預抽牌：${drawn}]`
+    };
   }
 
   res.setHeader('Content-Type', 'text/event-stream');
@@ -73,7 +107,7 @@ app.post('/api/chat', async (req, res) => {
         model: MODEL,
         max_tokens: 350,
         stream: true,
-        messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...messages]
+        messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...augmented]
       },
       responseType: 'stream',
       timeout: 30000
