@@ -260,7 +260,7 @@ const screens = {
 
 // ── Screen Navigation ─────────────────────────────────────────
 function showScreen(name) {
-  Object.values(screens).forEach(s => s.classList.remove('active'));
+  Object.values(screens).forEach(s => s?.classList.remove('active'));
   if (screens[name]) screens[name].classList.add('active');
   state.phase = name;
 }
@@ -334,8 +334,12 @@ function runLoading() {
   const bar = $('loadingBar');
   const iv = setInterval(() => {
     p += Math.random() * 15 + 5;
-    if (p >= 100) { p = 100; clearInterval(iv); setTimeout(() => showScreen('welcome'), 400); }
-    bar.style.width = p + '%';
+    if (p >= 100) {
+      p = 100;
+      clearInterval(iv);
+      setTimeout(() => showScreen('welcome'), 400);
+    }
+    if (bar) bar.style.width = p + '%';
   }, 180);
 }
 
