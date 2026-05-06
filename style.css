@@ -434,7 +434,7 @@ html, body {
 /* ── Card Fan Selection ───────────────────────────────────── */
 .fan-container {
   position: relative; width: 100%;
-  min-height: 280px; display: flex;
+  min-height: 340px; display: flex;
   align-items: flex-end; justify-content: center;
   overflow: visible;
 }
@@ -1031,7 +1031,7 @@ html, body {
 @media (max-width: 600px) {
   .spread-grid { grid-template-columns: 1fr; }
   .flip-card { width: 90px; height: 155px; }
-  .fan-container { min-height: 220px; }
+  .fan-container { min-height: 260px; }
   .fan-card { width: 70px; height: 120px; }
   .screen-inner { padding: 30px 16px; }
   .chat-msg { max-width: 95%; }

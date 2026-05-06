@@ -545,14 +545,16 @@ function buildFan() {
 
   const count = state.shuffledDeck.length;
   const fanSpread = Math.min(count, 22);
-  const totalAngle = 55;
+  const isNarrow = window.innerWidth <= 600;
+  const totalAngle = isNarrow ? 64 : 82;
+  const fanRadius = isNarrow ? 170 : 280;
   const startAngle = -totalAngle / 2;
   const centerX = fan.offsetWidth / 2 || window.innerWidth / 2;
 
   for (let i = 0; i < fanSpread; i++) {
     const angle = startAngle + (totalAngle / (fanSpread - 1)) * i;
     const rad = angle * Math.PI / 180;
-    const offsetX = Math.sin(rad) * 180;
+    const offsetX = Math.sin(rad) * fanRadius;
     const tx = centerX - 45 + offsetX;
     const card = document.createElement('div');
     card.className = 'fan-card';
