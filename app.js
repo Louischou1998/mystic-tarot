@@ -422,10 +422,16 @@ function performShuffle() {
   }, 1000);
 }
 
-// ── Fisher-Yates Shuffle ──────────────────────────────────────
+// ── Fisher-Yates Shuffle（crypto 隨機）────────────────────────
+function cryptoRandom() {
+  const buf = new Uint32Array(1);
+  crypto.getRandomValues(buf);
+  return buf[0] / (0xFFFFFFFF + 1);
+}
+
 function fisherYates(arr) {
   for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
+    const j = Math.floor(cryptoRandom() * (i + 1));
     [arr[i], arr[j]] = [arr[j], arr[i]];
   }
   return arr;
@@ -478,7 +484,7 @@ function onFanCardClick(card, idx) {
   if (state.selectedIndices.length === cfg.count) {
     state.drawnCards = state.selectedIndices.map(i => ({
       card: state.shuffledDeck[i],
-      reversed: Math.random() < 0.3
+      reversed: cryptoRandom() < 0.3
     }));
     setTimeout(() => buildReadingScreen(), 600);
   }
