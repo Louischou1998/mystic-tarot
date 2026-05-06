@@ -257,8 +257,28 @@ const state = {
   drawnCards: [],
   selectedIndices: [],
   shuffledDeck: [],
+  meaningsById: new Map(),
   phase: 'loading'
 };
+
+const ASPECT_LABELS = {
+  love: '愛情',
+  career: '事業',
+  money: '財運',
+  relationship: '人際',
+  health: '健康',
+  advice: '建議',
+  warning: '警示',
+  past: '過去',
+  present: '現在',
+  future: '未來',
+  situation: '處境',
+  challenge: '挑戰',
+  suggestion: '行動建議'
+};
+
+const DEFAULT_ASPECT_KEYS = ['love', 'career', 'money', 'relationship', 'health', 'advice', 'warning'];
+const ALL_ASPECT_KEYS = Object.keys(ASPECT_LABELS);
 
 // ── DOM Refs ─────────────────────────────────────────────────
 const $ = id => document.getElementById(id);
@@ -277,6 +297,70 @@ function showScreen(name) {
   Object.values(screens).forEach(s => s?.classList.remove('active'));
   if (screens[name]) screens[name].classList.add('active');
   state.phase = name;
+}
+
+function escapeHTML(value) {
+  return String(value ?? '').replace(/[&<>"']/g, ch => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  }[ch]));
+}
+
+async function loadFullMeanings() {
+  try {
+    const res = await fetch('assets/data/tarot-meanings-full.json?v=1');
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const meanings = await res.json();
+    state.meaningsById = new Map(meanings.map(item => [item.id, item]));
+  } catch (err) {
+    console.warn('完整牌義資料載入失敗，改用內建短解讀。', err);
+  }
+}
+
+function getEnhancedMeaning(card, reversed) {
+  const enhanced = state.meaningsById.get(card.id);
+  if (enhanced) return reversed ? enhanced.reversed : enhanced.upright;
+
+  const fallback = reversed ? card.reversed : card.upright;
+  return {
+    title: fallback.title,
+    meaning: fallback.desc,
+    keywords: card.keywords || [],
+    aspects: {}
+  };
+}
+
+function getAspectKeysForPosition(spread, index) {
+  if (spread === 'single') return ['advice', 'warning', 'health'];
+  if (spread === 'three') return [
+    ['past', 'relationship', 'love'],
+    ['present', 'situation', 'challenge'],
+    ['future', 'suggestion', 'career']
+  ][index] || DEFAULT_ASPECT_KEYS;
+  if (spread === 'celtic') return [
+    ['situation', 'health', 'relationship'],
+    ['challenge', 'warning', 'career'],
+    ['present', 'love', 'money'],
+    ['advice', 'suggestion', 'career'],
+    ['future', 'money', 'relationship']
+  ][index] || DEFAULT_ASPECT_KEYS;
+  return DEFAULT_ASPECT_KEYS;
+}
+
+function buildAspectGrid(aspects, keys, className = 'aspect-grid') {
+  const entries = keys
+    .filter(key => aspects?.[key])
+    .map(key => `
+      <div class="aspect-item">
+        <div class="aspect-label">${ASPECT_LABELS[key]}</div>
+        <div class="aspect-text">${escapeHTML(aspects[key])}</div>
+      </div>
+    `);
+
+  return entries.length ? `<div class="${className}">${entries.join('')}</div>` : '';
 }
 
 // ── Canvas Starfield ─────────────────────────────────────────
@@ -596,19 +680,21 @@ function buildReadingDetail() {
   const cfg = SPREAD_CONFIGS[state.currentSpread];
 
   state.drawnCards.forEach(({ card, reversed }, i) => {
-    const interp = reversed ? card.reversed : card.upright;
+    const interp = getEnhancedMeaning(card, reversed);
+    const aspectKeys = getAspectKeysForPosition(state.currentSpread, i);
     const div = document.createElement('div');
     div.className = 'reading-card-detail';
     div.style.animationDelay = `${0.3 + i * 0.5}s`;
     div.innerHTML = `
-      <div class="rd-position">${cfg.positions[i]}</div>
-      <div class="rd-card-name">${card.num} · ${card.name} ${reversed ? '（逆位）' : ''}</div>
-      <div class="rd-card-name-en">${card.nameEn} · ${card.element} · ${card.planet}</div>
+      <div class="rd-position">${escapeHTML(cfg.positions[i])}</div>
+      <div class="rd-card-name">${escapeHTML(card.num)} · ${escapeHTML(card.name)} ${reversed ? '（逆位）' : ''}</div>
+      <div class="rd-card-name-en">${escapeHTML(card.nameEn)} · ${escapeHTML(card.element)}${card.planet ? ' · ' + escapeHTML(card.planet) : ''}</div>
       <div class="rd-keywords">
-        ${card.keywords.map(k => `<span class="rd-kw">${k}</span>`).join('')}
+        ${(interp.keywords || card.keywords || []).map(k => `<span class="rd-kw">${escapeHTML(k)}</span>`).join('')}
       </div>
-      <div class="rd-interp-title">${interp.title}</div>
-      <div class="rd-interp-text">${interp.desc}</div>
+      <div class="rd-interp-title">${escapeHTML(interp.title)}</div>
+      <div class="rd-interp-text">${escapeHTML(interp.meaning)}</div>
+      ${buildAspectGrid(interp.aspects, aspectKeys, 'aspect-grid rd-aspect-grid')}
     `;
     detail.appendChild(div);
   });
@@ -628,7 +714,8 @@ function buildSummary() {
   const spread = state.currentSpread;
   if (spread === 'single') {
     const { card, reversed } = cards[0];
-    return `今日宇宙透過「${card.name}」牌向你傳遞訊息。${reversed ? '逆位的' : ''}${card.name}提醒你：${(reversed ? card.reversed : card.upright).desc.slice(0, 60)}⋯⋯ 請在今天的行動中帶著這份洞見前行。`;
+    const interp = getEnhancedMeaning(card, reversed);
+    return `今日宇宙透過「${card.name}」牌向你傳遞訊息。${reversed ? '逆位的' : ''}${card.name}提醒你：${interp.meaning.slice(0, 60)}⋯⋯ 請在今天的行動中帶著這份洞見前行。`;
   }
   if (spread === 'three') {
     const names = cards.map(c => c.card.name);
@@ -644,7 +731,7 @@ function buildSummary() {
 // ── Card Expand Panel ─────────────────────────────────────────
 function openCardExpand(card, reversed) {
   const panel = $('cardExpandPanel');
-  const interp = reversed ? card.reversed : card.upright;
+  const interp = getEnhancedMeaning(card, reversed);
   const expandImg = $('expandImg');
   const expandImgWrap = $('expandImgWrap');
   let expandSymbol = $('expandSymbol');
@@ -675,9 +762,10 @@ function openCardExpand(card, reversed) {
   expandImgWrap.className = 'expand-img-wrap' + (reversed ? ' rev' : '');
   $('expandName').textContent = `${card.num} · ${card.name}${reversed ? '（逆位）' : ''}`;
   $('expandSub').textContent = `${card.nameEn}${card.suit ? ' · ' + card.suit : ''} · ${card.element}`;
-  $('expandKws').innerHTML = (card.keywords || []).map(k => `<span class="expand-kw">${k}</span>`).join('');
+  $('expandKws').innerHTML = (interp.keywords || card.keywords || []).map(k => `<span class="expand-kw">${escapeHTML(k)}</span>`).join('');
   $('expandTitle').textContent = interp.title;
-  $('expandDesc').textContent = interp.desc;
+  $('expandDesc').textContent = interp.meaning;
+  $('expandAspects').innerHTML = buildAspectGrid(interp.aspects, ALL_ASPECT_KEYS, 'aspect-grid expand-aspect-grid');
   panel.classList.add('open');
 }
 
@@ -901,6 +989,7 @@ resizeCanvas();
 initStars();
 animateCanvas(0);
 spawnParticles();
+loadFullMeanings();
 runLoading();
 
 // 點擊載入畫面可強制跳過

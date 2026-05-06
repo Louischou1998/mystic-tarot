@@ -641,6 +641,9 @@ html, body {
   color: var(--text-prime); font-size: 0.85rem;
   line-height: 1.85; letter-spacing: 0.04em;
 }
+.expand-aspects {
+  margin-top: 4px;
+}
 .expand-close {
   position: absolute; top: 12px; right: 16px;
   background: none; border: none; cursor: pointer;
@@ -688,6 +691,37 @@ html, body {
 .rd-interp-text {
   color: var(--text-prime); font-size: 0.88rem; line-height: 1.9;
   letter-spacing: 0.05em;
+}
+.aspect-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+}
+.rd-aspect-grid {
+  margin-top: 18px;
+}
+.expand-aspect-grid {
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+.aspect-item {
+  background: rgba(5,0,16,0.35);
+  border: 1px solid rgba(159,95,232,0.16);
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+.aspect-label {
+  color: var(--gold-lt);
+  font-family: var(--font-cinzel);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  margin-bottom: 6px;
+}
+.aspect-text {
+  color: var(--text-prime);
+  font-size: 0.82rem;
+  line-height: 1.75;
+  letter-spacing: 0.04em;
 }
 
 /* ── Overall Summary ─────────────────────────────────────── */
