@@ -36,17 +36,20 @@ const SYSTEM_PROMPT = `你是「命運之眼」——一位神秘古老的塔羅
 - 星幣(土)：王牌至十、侍者、騎士、皇后、國王
 
 【抽牌格式】
-當用戶要求抽牌時，系統會在訊息中提供預先抽好的牌（格式：「[預抽牌：牌名·正逆位]」）。
-你必須使用該牌進行解讀，並在回應中用以下格式標示：
+當用戶要求抽牌時，系統會在訊息中提供預先抽好的牌。
+單張格式：「[預抽牌：牌名·正逆位]」
+多張格式：「[預抽牌：牌名·正逆位、牌名·正逆位、牌名·正逆位]」
+你必須使用所有預抽牌進行解讀，並在回應中用以下格式標示每一張牌：
 [CARD:牌名:正逆位]
 例如：[CARD:太陽:正位] 或 [CARD:月亮:逆位]
-絕對不可自行選擇其他牌，必須使用預抽的牌。
+絕對不可自行選擇其他牌，必須使用預抽的牌。若系統提供三張牌，必須解讀三張牌。
 每張牌必須有深入、有溫度的解讀，結合用戶的具體問題。
 
 【回應長度：務必簡潔】
 一般對話：50-80字
-抽牌解讀：80-130字（必須包含 [CARD:...] 標籤）
-絕對不要超過130字，言簡意賅才是智者之道。`;
+單張抽牌解讀：80-130字（必須包含 [CARD:...] 標籤）
+三張抽牌解讀：220-360字（必須包含三個 [CARD:...] 標籤）
+言簡意賅才是智者之道。`;
 
 // 78張牌名列表（與前端同步）
 const ALL_CARD_NAMES = [
@@ -64,6 +67,29 @@ function drawRandomCard() {
   return `${name}·${orientation}`;
 }
 
+function drawRandomCards(count) {
+  const used = new Set();
+  const cards = [];
+
+  while (cards.length < count && used.size < ALL_CARD_NAMES.length) {
+    const drawn = drawRandomCard();
+    const name = drawn.split('·')[0];
+    if (used.has(name)) continue;
+    used.add(name);
+    cards.push(drawn);
+  }
+
+  return cards;
+}
+
+function getDrawCount(messages) {
+  const last = messages[messages.length - 1]?.content?.toLowerCase() || '';
+  if (/三張|三牌|3\s*張|3\s*牌|three\s*cards?|處境、挑戰與建議/.test(last)) {
+    return 3;
+  }
+  return needsCardDraw(messages) ? 1 : 0;
+}
+
 function needsCardDraw(messages) {
   const last = messages[messages.length - 1]?.content?.toLowerCase() || '';
   return /抽|牌|指引|今日|運勢|感情|事業|財|draw|card/.test(last);
@@ -75,14 +101,15 @@ app.post('/api/chat', async (req, res) => {
     return res.status(400).json({ error: 'Invalid messages' });
   }
 
-  // 偵測是否需要抽牌，若是則在最後訊息附加預抽結果
+  // 偵測按鈕/訊息需要幾張牌，並在最後訊息附加預抽結果。
   const augmented = [...messages];
-  if (needsCardDraw(messages)) {
-    const drawn = drawRandomCard();
+  const drawCount = getDrawCount(messages);
+  if (drawCount > 0) {
+    const drawn = drawRandomCards(drawCount);
     const last = augmented[augmented.length - 1];
     augmented[augmented.length - 1] = {
       ...last,
-      content: `${last.content}\n\n[預抽牌：${drawn}]`
+      content: `${last.content}\n\n[預抽牌：${drawn.join('、')}]`
     };
   }
 
@@ -105,7 +132,7 @@ app.post('/api/chat', async (req, res) => {
       },
       data: {
         model: MODEL,
-        max_tokens: 350,
+        max_tokens: drawCount >= 3 ? 900 : 350,
         stream: true,
         messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...augmented]
       },
