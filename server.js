@@ -114,9 +114,17 @@ app.post('/api/chat', async (req, res) => {
     req.on('close', () => response.data.destroy());
 
   } catch (err) {
-    const msg = err.response?.data?.toString() || err.message;
-    console.error('[error]', err.response?.status ?? '', msg.slice(0, 200));
-    res.write(`data: ${JSON.stringify({ error: msg.slice(0, 200) })}\n\n`);
+    let msg = err.message;
+    if (err.response?.data && typeof err.response.data.on === 'function') {
+      // responseType:'stream' 時要從 stream 讀取錯誤內容
+      try {
+        const chunks = [];
+        for await (const chunk of err.response.data) chunks.push(chunk);
+        msg = `HTTP ${err.response.status}: ${Buffer.concat(chunks).toString().slice(0, 300)}`;
+      } catch { msg = `HTTP ${err.response?.status ?? ''}: ${err.message}`; }
+    }
+    console.error('[error]', msg.slice(0, 300));
+    res.write(`data: ${JSON.stringify({ error: msg.slice(0, 300) })}\n\n`);
     res.end();
   }
 });
