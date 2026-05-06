@@ -681,9 +681,12 @@ function renderBubbleContent(text, isStreaming = false) {
     const rev = orientation.trim() === '逆位';
     if (!card) return `<strong>【${name.trim()} · ${orientation.trim()}】</strong>`;
     // 串流中加 no-anim 避免閃動，串流結束後移除讓動畫正常播放
+    const imgStyle = `width:100%;height:100%;object-fit:contain;display:block;transform:rotate(${rev?180:0}deg)`;
+    const fallback = `this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='flex'`;
     return `<div class="inline-card${isStreaming ? ' no-anim' : ''}">
       <div class="ic-art">
-        <img src="${card.image}" alt="${card.name}" style="width:100%;height:100%;object-fit:cover;display:block;transform:rotate(${rev?180:0}deg)">
+        <img src="${card.image}" alt="" style="${imgStyle}" onerror="${fallback}">
+        <span class="ic-symbol" style="display:none;color:${card.symbolColor}">${card.symbol}</span>
       </div>
       <div class="ic-name">${card.num} · ${card.name}<br><small>${orientation.trim()}</small></div>
     </div>`;
