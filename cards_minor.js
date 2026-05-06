@@ -1,4 +1,4 @@
-// Minor Arcana — 56 張小阿爾克納
+﻿// Minor Arcana — 56 張小阿爾克納
 const MINOR_ARCANA = [
   {
     id: 22, name: '權杖王牌', nameEn: 'Ace of Wands', num: 'A',
