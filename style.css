@@ -1094,39 +1094,109 @@ html, body {
   bottom: 24px;
   width: 48px;
   height: 58px;
+  animation: fireSpriteSway 2.8s ease-in-out infinite;
 }
 .flame {
   position: absolute;
   bottom: 0;
-  border-radius: 55% 55% 55% 55% / 70% 70% 35% 35%;
+  border-radius: 58% 42% 52% 48% / 72% 68% 34% 38%;
   transform-origin: center bottom;
   filter: drop-shadow(0 0 12px rgba(255,125,35,0.75));
-  animation: flameDance 1.2s ease-in-out infinite;
+  animation: flameDance 0.9s ease-in-out infinite;
 }
 .f1 {
-  left: 13px;
-  width: 23px;
-  height: 54px;
-  background: linear-gradient(180deg, #fff2a8 0%, #ffb13b 45%, #ef4b20 100%);
+  left: 10px;
+  width: 28px;
+  height: 58px;
+  background: radial-gradient(circle at 50% 72%, #fff7b8 0 12%, transparent 30%),
+    linear-gradient(180deg, #fff2a8 0%, #ffb13b 45%, #ef4b20 100%);
 }
 .f2 {
-  left: 1px;
-  width: 21px;
-  height: 40px;
+  left: -1px;
+  width: 24px;
+  height: 42px;
   background: linear-gradient(180deg, #ffd979 0%, #ff812e 55%, #9f2f1a 100%);
   animation-delay: -0.35s;
 }
 .f3 {
-  right: 0;
-  width: 20px;
-  height: 36px;
+  right: -2px;
+  width: 23px;
+  height: 39px;
   background: linear-gradient(180deg, #ffe8a0 0%, #ff9c2f 55%, #b53818 100%);
   animation-delay: -0.65s;
 }
+.fire-face {
+  position: absolute;
+  left: 12px;
+  bottom: 18px;
+  width: 25px;
+  height: 18px;
+  z-index: 3;
+  animation: faceBob 1.6s ease-in-out infinite;
+}
+.fire-face .eye {
+  position: absolute;
+  top: 2px;
+  width: 5px;
+  height: 7px;
+  border-radius: 50%;
+  background: #3a1205;
+  box-shadow: 0 0 4px rgba(255,240,180,0.75);
+  animation: fireBlink 4.4s ease-in-out infinite;
+}
+.fire-face .left { left: 4px; }
+.fire-face .right { right: 4px; animation-delay: 0.08s; }
+.fire-face .mouth {
+  position: absolute;
+  left: 50%;
+  bottom: 2px;
+  width: 9px;
+  height: 5px;
+  transform: translateX(-50%);
+  border-bottom: 2px solid #3a1205;
+  border-radius: 0 0 10px 10px;
+  animation: mouthTalk 3.2s ease-in-out infinite;
+}
+.fire-sparks span {
+  position: absolute;
+  bottom: 42px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #ffd979;
+  box-shadow: 0 0 10px #ff9c2f;
+  opacity: 0;
+  animation: sparkFloat 2.4s ease-in-out infinite;
+}
+.fire-sparks span:nth-child(1) { left: 32px; animation-delay: 0s; }
+.fire-sparks span:nth-child(2) { left: 58px; animation-delay: -0.8s; }
+.fire-sparks span:nth-child(3) { left: 78px; animation-delay: -1.5s; }
 @keyframes flameDance {
-  0%,100% { transform: scaleY(1) rotate(-2deg); opacity: 0.88; }
-  45% { transform: scaleY(1.13) scaleX(0.92) rotate(4deg); opacity: 1; }
-  70% { transform: scaleY(0.94) scaleX(1.08) rotate(-5deg); opacity: 0.82; }
+  0%,100% { transform: scaleY(1) scaleX(1) rotate(-3deg); opacity: 0.9; border-radius: 58% 42% 52% 48% / 72% 68% 34% 38%; }
+  35% { transform: scaleY(1.18) scaleX(0.88) rotate(6deg); opacity: 1; border-radius: 45% 55% 46% 54% / 78% 64% 36% 30%; }
+  70% { transform: scaleY(0.92) scaleX(1.12) rotate(-7deg); opacity: 0.84; border-radius: 62% 38% 58% 42% / 65% 72% 30% 42%; }
+}
+@keyframes fireSpriteSway {
+  0%,100% { transform: translateX(0) rotate(-1deg); }
+  50% { transform: translateX(3px) rotate(2deg); }
+}
+@keyframes faceBob {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
+}
+@keyframes fireBlink {
+  0%,90%,100% { transform: scaleY(1); }
+  93%,96% { transform: scaleY(0.12); }
+}
+@keyframes mouthTalk {
+  0%,100% { height: 5px; width: 9px; }
+  40% { height: 7px; width: 7px; border-radius: 50%; border: 2px solid #3a1205; border-top: none; }
+  60% { height: 4px; width: 11px; }
+}
+@keyframes sparkFloat {
+  0% { transform: translate(0,0) scale(0.4); opacity: 0; }
+  18% { opacity: 0.9; }
+  100% { transform: translate(-12px,-46px) scale(0.05); opacity: 0; }
 }
 @keyframes hearthGlow {
   0%,100% { opacity: 0.55; transform: scale(0.96); }
