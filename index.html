@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>神秘塔羅 · 命運之輪</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&family=Noto+Serif+TC:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <canvas id="starCanvas"></canvas>
+  <div class="nebula-bg"></div>
+
+  <!-- Loading Screen -->
+  <div id="loadingScreen" class="screen active">
+    <div class="loading-content">
+      <div class="mystical-eye">
+        <div class="eye-ring ring-outer"></div>
+        <div class="eye-ring ring-mid"></div>
+        <div class="eye-ring ring-inner"></div>
+        <svg class="eye-svg" viewBox="0 0 120 120">
+          <polygon class="eye-triangle" points="60,10 110,100 10,100"/>
+          <circle class="eye-circle" cx="60" cy="72" r="18"/>
+          <circle class="eye-pupil" cx="60" cy="72" r="8"/>
+          <circle class="eye-shine" cx="55" cy="67" r="3"/>
+        </svg>
+      </div>
+      <h1 class="loading-title cinzel">MYSTIC TAROT</h1>
+      <p class="loading-sub noto">神秘塔羅 · 命運之輪正在轉動</p>
+      <div class="loading-bar-wrap"><div class="loading-bar" id="loadingBar"></div></div>
+    </div>
+  </div>
+
+  <!-- Welcome Screen -->
+  <div id="welcomeScreen" class="screen">
+    <div class="particles" id="particles"></div>
+    <div class="screen-inner">
+      <div class="deco-line top-line">
+        <span></span><span class="deco-gem">✦</span><span></span>
+      </div>
+      <h1 class="hero-title cinzel">
+        <span class="hero-sub-en">MYSTIC TAROT</span>
+        <span class="hero-main-zh noto">神秘塔羅</span>
+        <span class="hero-tagline noto">揭開命運的面紗，探索靈魂的深處</span>
+      </h1>
+      <div class="preview-deck">
+        <div class="preview-card pc-left"></div>
+        <div class="preview-card pc-center"></div>
+        <div class="preview-card pc-right"></div>
+        <div class="deck-glow-orb"></div>
+      </div>
+      <div class="welcome-btn-group">
+        <button class="btn-primary" id="startBtn">
+          <span class="btn-shine"></span>
+          <span class="btn-label noto">開始占卜</span>
+          <span class="btn-icon">✦</span>
+        </button>
+        <button class="btn-oracle" id="chatBtn">
+          <span class="btn-shine"></span>
+          <span class="btn-oracle-icon">👁</span>
+          <span class="btn-label noto">與神諭對話</span>
+        </button>
+      </div>
+      <p class="footer-quote noto">宇宙的智慧為你指引 · 答案存於你的心中</p>
+      <div class="deco-line bot-line">
+        <span></span><span class="deco-gem">✦</span><span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Spread Selection Screen -->
+  <div id="spreadScreen" class="screen">
+    <div class="screen-inner">
+      <h2 class="section-title cinzel">CHOOSE YOUR SPREAD</h2>
+      <p class="section-sub noto">選擇你希望探索的命運維度</p>
+      <div class="spread-grid">
+        <div class="spread-card" data-spread="single">
+          <div class="spread-preview sp-single">
+            <div class="sp-card"></div>
+          </div>
+          <div class="spread-info">
+            <h3 class="cinzel">單張指引</h3>
+            <p class="noto">今日訊息 · 直接洞見</p>
+            <span class="spread-badge noto">1 張</span>
+          </div>
+          <div class="spread-card-glow"></div>
+        </div>
+        <div class="spread-card featured" data-spread="three">
+          <div class="spread-badge-top noto">最受歡迎</div>
+          <div class="spread-preview sp-three">
+            <div class="sp-card"></div>
+            <div class="sp-card sp-main"></div>
+            <div class="sp-card"></div>
+          </div>
+          <div class="spread-info">
+            <h3 class="cinzel">時間之流</h3>
+            <p class="noto">過去 · 現在 · 未來</p>
+            <span class="spread-badge noto">3 張</span>
+          </div>
+          <div class="spread-card-glow"></div>
+        </div>
+        <div class="spread-card" data-spread="celtic">
+          <div class="spread-preview sp-celtic">
+            <div class="sp-card sc-top"></div>
+            <div class="sp-card sc-left"></div>
+            <div class="sp-card sc-center"></div>
+            <div class="sp-card sc-right"></div>
+            <div class="sp-card sc-bot"></div>
+          </div>
+          <div class="spread-info">
+            <h3 class="cinzel">命運之星</h3>
+            <p class="noto">全面靈魂探索</p>
+            <span class="spread-badge noto">5 張</span>
+          </div>
+          <div class="spread-card-glow"></div>
+        </div>
+      </div>
+      <button class="btn-ghost" id="backToWelcome">← 返回</button>
+    </div>
+  </div>
+
+  <!-- Shuffle Screen -->
+  <div id="shuffleScreen" class="screen">
+    <div class="screen-inner">
+      <h2 class="section-title cinzel">FOCUS YOUR MIND</h2>
+      <p class="section-sub noto" id="shuffleSub">深呼吸，將你的問題或意念注入牌組之中</p>
+      <div class="deck-zone" id="deckZone">
+        <div class="deck-stack" id="deckStack">
+          <div class="deck-layer dl-5"></div>
+          <div class="deck-layer dl-4"></div>
+          <div class="deck-layer dl-3"></div>
+          <div class="deck-layer dl-2"></div>
+          <div class="deck-layer dl-1"></div>
+        </div>
+        <div class="deck-aura"></div>
+        <p class="deck-cta noto" id="deckCta">點擊牌組以洗牌</p>
+      </div>
+      <div class="shuffle-fx hidden" id="shuffleFx">
+        <div class="sfx-orb o1"></div>
+        <div class="sfx-orb o2"></div>
+        <div class="sfx-orb o3"></div>
+        <p class="noto">命運之力正在流動⋯⋯</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card Selection Screen -->
+  <div id="selectionScreen" class="screen">
+    <div class="screen-inner">
+      <h2 class="section-title cinzel" id="selTitle">DRAW YOUR CARDS</h2>
+      <p class="section-sub noto" id="selSub">感受每張牌的能量，選擇呼喚你的那一張</p>
+      <div class="fan-container" id="fanContainer"></div>
+      <div class="sel-status noto" id="selStatus"></div>
+    </div>
+  </div>
+
+  <!-- Reading Screen -->
+  <div id="readingScreen" class="screen">
+    <div class="screen-inner reading-wrap">
+      <div class="reading-header">
+        <div class="deco-line"><span></span><span class="deco-gem">✦</span><span></span></div>
+        <h2 class="section-title cinzel">THE CARDS SPEAK</h2>
+        <p class="section-sub noto">命運已揭示</p>
+      </div>
+      <div class="revealed-cards" id="revealedCards"></div>
+      <div class="reading-detail" id="readingDetail"></div>
+      <div class="reading-actions">
+        <button class="btn-primary" id="newReadingBtn">
+          <span class="btn-shine"></span>
+          <span class="btn-label noto">重新占卜</span>
+          <span class="btn-icon">✦</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chat Screen -->
+  <div id="chatScreen" class="screen">
+    <div class="chat-wrap">
+      <!-- Header -->
+      <div class="chat-header">
+        <div class="oracle-avatar">
+          <div class="oa-ring r1"></div>
+          <div class="oa-ring r2"></div>
+          <div class="oa-eye">👁</div>
+        </div>
+        <div class="oracle-info">
+          <h2 class="cinzel">命運之眼</h2>
+          <span class="oracle-status noto" id="oracleStatus">✦ 正在聆聽宇宙的聲音</span>
+        </div>
+        <button class="btn-ghost chat-back-btn" id="chatBackBtn">← 返回</button>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="chat-quick-actions" id="chatQuickActions">
+        <button class="qbtn noto" data-msg="請為我抽一張今日指引牌，並說明今天應注意什麼">🃏 今日指引牌</button>
+        <button class="qbtn noto" data-msg="請為我解讀近期的感情運勢，並抽一張相關的牌">❤ 感情運</button>
+        <button class="qbtn noto" data-msg="請為我解讀事業與工作的運勢，並抽一張相關的牌">⚡ 事業運</button>
+        <button class="qbtn noto" data-msg="請為我抽三張牌，解讀我最近面對的處境、挑戰與建議">✦ 三牌解讀</button>
+      </div>
+
+      <!-- Messages -->
+      <div class="chat-messages" id="chatMessages">
+        <div class="chat-msg oracle-msg">
+          <div class="msg-avatar-icon">👁</div>
+          <div class="msg-bubble noto">
+            ✦ 歡迎來到命運之眼的領域，尋覓者。<br><br>
+            我是宇宙智慧的傳遞者，透過塔羅的神秘語言，為你揭示命運的脈絡。<br><br>
+            你可以向我提問——關於愛情、事業、人生方向——或者，讓我為你抽一張牌，聆聽今日宇宙的訊息。
+          </div>
+        </div>
+      </div>
+
+      <!-- Input -->
+      <div class="chat-input-area">
+        <div class="chat-input-wrap">
+          <textarea
+            id="chatInput"
+            class="chat-input noto"
+            placeholder="向命運之眼提問⋯⋯"
+            rows="1"
+          ></textarea>
+          <button class="chat-send-btn" id="chatSendBtn" title="發送">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="22" y1="2" x2="11" y2="13"></line>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+          </button>
+        </div>
+        <p class="chat-hint noto">按 Enter 發送 · Shift+Enter 換行</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
