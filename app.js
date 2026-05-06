@@ -516,6 +516,13 @@ function updateSelStatus() {
     : `你選擇的道路已清晰顯現`;
 }
 
+window.handleCardImageError = function handleCardImageError(img) {
+  const fallback = img.nextElementSibling;
+  img.onerror = null;
+  img.style.display = 'none';
+  if (fallback) fallback.style.display = 'flex';
+};
+
 // ── Reading Screen ────────────────────────────────────────────
 function buildReadingScreen() {
   showScreen('reading');
@@ -551,7 +558,8 @@ function buildRevealedCards() {
         ${reversed ? '<div class="card-reversed-badge">逆位</div>' : ''}
         <div class="card-face${reversed ? ' reversed' : ''}">
           <div class="card-face-art">
-            <img class="card-face-img" src="${card.image}" alt="${card.name}">
+            <img class="card-face-img" src="${card.image}" alt="${card.name}" onerror="handleCardImageError(this)">
+            <span class="card-face-symbol" style="display:none;color:${card.symbolColor}">${card.symbol}</span>
           </div>
           <div class="card-face-bottom">
             <div class="card-face-num">${card.num}</div>
@@ -626,9 +634,27 @@ function buildSummary() {
 function openCardExpand(card, reversed) {
   const panel = $('cardExpandPanel');
   const interp = reversed ? card.reversed : card.upright;
-  $('expandImg').src = card.image;
-  $('expandImg').alt = card.name;
-  $('expandImgWrap').className = 'expand-img-wrap' + (reversed ? ' rev' : '');
+  const expandImg = $('expandImg');
+  const expandImgWrap = $('expandImgWrap');
+  let expandSymbol = $('expandSymbol');
+  if (!expandSymbol) {
+    expandSymbol = document.createElement('span');
+    expandSymbol.id = 'expandSymbol';
+    expandSymbol.className = 'expand-symbol';
+    expandImgWrap.appendChild(expandSymbol);
+  }
+  expandImg.style.display = 'block';
+  expandSymbol.style.display = 'none';
+  expandSymbol.textContent = card.symbol;
+  expandSymbol.style.color = card.symbolColor;
+  expandImg.onerror = () => {
+    expandImg.onerror = null;
+    expandImg.style.display = 'none';
+    expandSymbol.style.display = 'flex';
+  };
+  expandImg.src = card.image;
+  expandImg.alt = card.name;
+  expandImgWrap.className = 'expand-img-wrap' + (reversed ? ' rev' : '');
   $('expandName').textContent = `${card.num} · ${card.name}${reversed ? '（逆位）' : ''}`;
   $('expandSub').textContent = `${card.nameEn}${card.suit ? ' · ' + card.suit : ''} · ${card.element}`;
   $('expandKws').innerHTML = (card.keywords || []).map(k => `<span class="expand-kw">${k}</span>`).join('');

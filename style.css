@@ -547,6 +547,17 @@ html, body {
   object-fit: contain; display: block;
 }
 .card-face.reversed .card-face-img { transform: rotate(180deg); }
+.card-face-symbol {
+  width: 100%; height: 100%;
+  align-items: center; justify-content: center;
+  font-size: 3rem;
+  filter: drop-shadow(0 0 12px currentColor);
+  background-image: repeating-linear-gradient(
+    45deg, transparent, transparent 8px,
+    rgba(201,162,39,0.06) 8px, rgba(201,162,39,0.06) 9px
+  );
+}
+.card-face.reversed .card-face-symbol { transform: rotate(180deg); }
 .card-face-bottom {
   background: rgba(0,0,0,0.7); padding: 8px 6px; flex-shrink: 0;
   text-align: center; border-top: 1px solid rgba(201,162,39,0.25);
@@ -594,11 +605,23 @@ html, body {
   border-radius: 10px; overflow: hidden;
   border: 1px solid rgba(201,162,39,0.4);
   box-shadow: 0 0 20px rgba(159,95,232,0.3);
+  background: #050010;
 }
 .expand-img-wrap img {
   width: 100%; height: auto; display: block;
 }
 .expand-img-wrap.rev img { transform: rotate(180deg); }
+.expand-symbol {
+  min-height: 190px;
+  align-items: center; justify-content: center;
+  font-size: 3rem;
+  filter: drop-shadow(0 0 12px currentColor);
+  background-image: repeating-linear-gradient(
+    45deg, transparent, transparent 8px,
+    rgba(201,162,39,0.06) 8px, rgba(201,162,39,0.06) 9px
+  );
+}
+.expand-img-wrap.rev .expand-symbol { transform: rotate(180deg); }
 .expand-text { flex: 1; display: flex; flex-direction: column; gap: 10px; }
 .expand-name {
   font-family: var(--font-cinzel); color: var(--gold);
