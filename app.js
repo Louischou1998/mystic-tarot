@@ -433,7 +433,7 @@ function runLoading() {
     if (bar) bar.style.width = p + '%';
     if (p >= 100) {
       clearInterval(iv);
-      showScreen('welcome');
+      if (state.phase === 'loading') showScreen('welcome');
     }
   }, 80);
 }
