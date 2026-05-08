@@ -561,11 +561,11 @@ function buildFan() {
     const angle = startAngle + (totalAngle / (fanSpread - 1)) * i;
     const rad = angle * Math.PI / 180;
     const offsetX = Math.sin(rad) * fanRadius;
-    const tx = centerX - 45 + offsetX;
     const card = document.createElement('div');
     card.className = 'fan-card dealing';
     card.dataset.index = i;
-    const baseTransform = `translateX(${offsetX}px) rotate(${angle}deg)`;
+    // `left` already applies horizontal fan offset, so base transform keeps only rotation.
+    const baseTransform = `rotate(${angle}deg)`;
     card.style.cssText = `
       left: calc(50% - 45px + ${offsetX}px);
       transform: rotate(${angle}deg);
